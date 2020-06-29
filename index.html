@@ -6,7 +6,8 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+  <!-- font awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -24,25 +25,22 @@
 
     <!-- search icon -->
     <div id="search-bar">
-      <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor"
-        xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd"
-          d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
-        <path fill-rule="evenodd"
-          d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
-      </svg>
-      <form action="submit">
+      <form>
         <input id="city" type="text" placeholder="weather in your city">
+        <input id="search" type="submit" value="search">
       </form>
     </div>
 
   </header>
 
-  <div class="row">
+  <!-- history of searched cities on the left -->
+  <div class="row d-flex">
     <div class="col-md-3 search-history">
+      <p id="past-cities">Past Cities:</p>
     </div>
     <div class="container">
       
+      <!-- main city info -->
         <div class="col-md-9">
           <div class="main-city">
             <span id="city-name"></span>
@@ -53,11 +51,12 @@
             <p id="wind-speed"></p>
             <p id="uv-index"></p>
           </div>
-          <div class="five-day-forecast">
-          </div>
-
         </div>
-      
+        <!-- 5 day forecast -->
+      <div class="col-md-9">
+        <div class="five-day-forecast">
+        </div>
+      </div>
     </div>
   
   </div>

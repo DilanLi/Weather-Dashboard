@@ -58,4 +58,11 @@ header {
 /* search history panel on the left */
 .search-history {
     border: 2px solid grey;
+    height: 700px;;
+}
+
+#past-cities {
+    padding: 20px;
+    background-color: #93dded;
+    text-align: center;
 }

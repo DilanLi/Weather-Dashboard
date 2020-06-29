@@ -7,6 +7,7 @@ $(document).ready(function() {
     var currentInfo = currentDayOfWeek + ", " + currentDay;
     $("#date").text(currentInfo);
     $("#current-time").text(currentTime);
+    var city = "salt lake city";
     
     //this function dynamically updates hours and seconds on the html
     function updateTime(){
@@ -15,10 +16,11 @@ $(document).ready(function() {
     }
     setInterval(updateTime, 59000);
 
+    getWeather();
 
-
-var city = "salt lake city"
-queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=17ffeabcb0395a48b5f63a70619d8c8e"
+    function getWeather(){
+    
+      queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=17ffeabcb0395a48b5f63a70619d8c8e"
     $.ajax({
         url: queryURL,
         method: "GET"
@@ -75,7 +77,15 @@ queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid
         });
 
     });
+    }
 
 
+    $("#search").click(function(){
+      event.preventDefault();
+      var city = $("#city").val();
+      // localStorage.setItem("defaultCity", city);
+      // var city = localStorage.getItem("defaultCity");
+      getWeather();
+    })
 
 });
