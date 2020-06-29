@@ -7,7 +7,6 @@ $(document).ready(function() {
     var currentInfo = currentDayOfWeek + ", " + currentDay;
     $("#date").text(currentInfo);
     $("#current-time").text(currentTime);
-    var city = "salt lake city";
     
     //this function dynamically updates hours and seconds on the html
     function updateTime(){
@@ -19,7 +18,7 @@ $(document).ready(function() {
     getWeather();
 
     function getWeather(){
-    
+      var city = "salt lake city";
       queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=17ffeabcb0395a48b5f63a70619d8c8e"
     $.ajax({
         url: queryURL,
