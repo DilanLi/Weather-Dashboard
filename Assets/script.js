@@ -9,8 +9,13 @@ $(document).ready(function() {
     var searchedCities = [];
 
     displayHistory();
+    // lastSearchedDisplay();
 
-    function getWeather(){
+    // function lastSearchedDisplay(){
+    //   getWeather("Salt Lake City");
+    // }
+
+    function getWeather(city){
 
       queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=17ffeabcb0395a48b5f63a70619d8c8e"
     $.ajax({
@@ -85,9 +90,7 @@ $(document).ready(function() {
 
     $("#search").click(function(){
       event.preventDefault();
-      if (city !== ""){
-        city = $("#city").val();
-      };
+      city = $("#city").val();
       searchedCities.push(city);
       console.log(searchedCities);
 
@@ -95,15 +98,32 @@ $(document).ready(function() {
       var liElm = $("<li>").text(city);
       liElm.addClass("list-group-item");
       $(".list-group").append(liElm);  
-      getWeather();
+      getWeather(city);
 
       localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
     })
 
+    $(".list-group-item").click(function(){
+      city = $(this).text();
+      getWeather(city);
+    })
+
+
     function displayHistory(){
       $(".list-group").empty();
-      //get search history from local storage and display all on html
+      var citiesToDisplay;
       citiesToDisplay = JSON.parse(localStorage.getItem("searchedCities"));
+      // city = citiesToDisplay[citiesToDisplay.length - 1];
+      // getWeather(city);
+      if (citiesToDisplay == undefined) {
+        citiesToDisplay = ["Salt Lake City"];
+        getWeather("Salt Lake City");
+      } else if (citiesToDisplay != undefined) {
+        citiesToDisplay = JSON.parse(localStorage.getItem("searchedCities"));
+        city = citiesToDisplay[citiesToDisplay.length - 1];
+        getWeather(city);
+      }
+      //get search history from local storage and display all on html
       for (i=0; i < citiesToDisplay.length; i++){
         var liElm = $("<li>").text(citiesToDisplay[i]);
         liElm.addClass("list-group-item");
@@ -111,13 +131,6 @@ $(document).ready(function() {
       }
 
       //display last searched city by grabbing the value of last city in the searchedCities array
-      city = citiesToDisplay[citiesToDisplay.length - 1];
-      getWeather();
     }
 
-
-    $(".list-group-item").click(function(){
-      city = $(this).text();
-      getWeather();
-    })
 });
