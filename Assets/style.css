@@ -55,9 +55,23 @@ header {
 
 
 /* search history panel on the left */
+.your-favorite-cities{
+    background-color: #28afce;
+    margin-top: 20px;
+    padding: 12px 0 12px 20px;
+    border-radius: 5px;
+}
 
-#past-cities {
+/* #past-cities {
     padding: 20px;
     background-color: #93dded;
     text-align: center;
+} */
+
+/* UV Index  */
+#uv-index {
+    font-size: 1.2em;
+    padding: 5px;
+    border-radius: 10px;
+    margin-left: 8px;
 }

@@ -3,30 +3,14 @@ $(document).ready(function() {
     var city;
     //use moment.js library to display day of week and date
     var currentDay = moment().format('MMMM Do YYYY');
-    // var currentTime = moment().format('h:mm a');
     var currentDayOfWeek = moment().format("dddd");
     var currentInfo = currentDayOfWeek + ", " + currentDay;
     $("#date").text(currentInfo);
-    // $("#current-time").text(currentTime);
-    
-
-    //this function dynamically updates hours and seconds on the html
-    // function updateTime(){
-    //     currentTime = moment().format('h:mm a');
-    //     $("#current-time").text(currentTime);
-    // }
-    // setInterval(updateTime, 59000);
+    var searchedCities = [];
 
     displayHistory();
-    getWeather();
 
     function getWeather(){
-      if (city !== ""){
-        localStorage.setItem(city, city);
-        var liElm = $("<li>").text(city);
-        liElm.addClass("list-group-item");
-        $(".list-group").append(liElm);  
-      }
 
       queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=17ffeabcb0395a48b5f63a70619d8c8e"
     $.ajax({
@@ -37,6 +21,7 @@ $(document).ready(function() {
         //   console.log(response);
         console.log(response);
         $("#city-name").text(response.name);
+        $("#city-name").css("font-size", "1.5em");
         var weatherIconURL = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
         $("#weather-icon").attr("src", weatherIconURL);
         var tempMax = "Highest Temperature: " + ((response.main.temp_max - 273.15) * 1.80 + 32).toFixed(1) + " °F";
@@ -58,15 +43,13 @@ $(document).ready(function() {
               console.log(response);
               var uvIndex = response.current.uvi;
               $("#uv-container").text("UV Index: ");
-              console.log(uvIndex);
               $("#uv-index").text(uvIndex);
               if (uvIndex < 6) {
-                $("#uv-index").css("backgroud-color", "green");
-              } else if (uvIndex < 8) {
-                $("#uv-index").css("backgroud-color", "yellow");
-              } else {
-                console.log("correct");
-                $("#uv-index").css("backgroud-color", "red");
+                $("#uv-index").css("background-color", "#27cf2a");
+              } else if (uvIndex > 6 && uvIndex < 8) {
+                $("#uv-index").css("background-color", "#f0c543");
+              } else if (uvIndex >= 8) {
+                $("#uv-index").css("background-color", "#e35262");
               }
 
               $(".five-day-forecast").empty();
@@ -79,7 +62,8 @@ $(document).ready(function() {
                                             "background-color": "#93dded",
                                             "margin": "20px",
                                             "padding": "15px",
-                                            "float": "left"
+                                            "float": "left",
+                                            "border-radius": "10px"
                                         });
                 var dateElm = $("<p>").text(dateForecast);
                 forecastDiv.append(dateElm);
@@ -100,24 +84,35 @@ $(document).ready(function() {
     }
 
     function displayHistory(){
-      for (let i = 0; i< localStorage.length; i++) {
-        var key = localStorage.key(i);
-        if (key !== "undefined") {
-          var cities = localStorage.getItem(key);
-          var liElm = $("<li>").text(cities);
-          liElm.addClass("list-group-item");
-          $(".list-group").append(liElm);  
-        }
+      $(".list-group").empty();
+      citiesToDisplay = JSON.parse(localStorage.getItem("searchedCities"));
+      for (i=0; i < citiesToDisplay.length; i++){
+        var liElm = $("<li>").text(citiesToDisplay[i]);
+        liElm.addClass("list-group-item");
+        $(".list-group").append(liElm);    
       }
     }
 
+
     $("#search").click(function(){
       event.preventDefault();
-      city = $("#city").val();
+      if (city !== ""){
+        city = $("#city").val();
+      };
+      searchedCities.push(city);
+      console.log(searchedCities);
+
+      //for every search, create a city tab in the "Your Favorite Cities" panel
+      var liElm = $("<li>").text(city);
+      liElm.addClass("list-group-item");
+      $(".list-group").append(liElm);  
       getWeather();
+
+      localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
     })
 
     $(".list-group-item").click(function(){
+      alert("clicked!");
       city = $(this).text();
       getWeather();
     })
