@@ -90,6 +90,7 @@ $(document).ready(function() {
 
     $("#search").click(function(){
       event.preventDefault();
+
       city = $("#city").val();
       searchedCities.push(city);
       console.log(searchedCities);
@@ -103,7 +104,7 @@ $(document).ready(function() {
       localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
     })
 
-    $(".list-group-item").click(function(){
+    $("li").click(function(){
       city = $(this).text();
       getWeather(city);
     })
@@ -111,21 +112,20 @@ $(document).ready(function() {
 
     function displayHistory(){
       $(".list-group").empty();
-      var citiesToDisplay;
-      citiesToDisplay = JSON.parse(localStorage.getItem("searchedCities"));
+      searchedCities = JSON.parse(localStorage.getItem("searchedCities"));
       // city = citiesToDisplay[citiesToDisplay.length - 1];
       // getWeather(city);
-      if (citiesToDisplay == undefined) {
-        citiesToDisplay = ["Salt Lake City"];
+      if (searchedCities == undefined) {
+        searchedCities = ["Salt Lake City"];
         getWeather("Salt Lake City");
-      } else if (citiesToDisplay != undefined) {
-        citiesToDisplay = JSON.parse(localStorage.getItem("searchedCities"));
-        city = citiesToDisplay[citiesToDisplay.length - 1];
+      } else if (searchedCities != undefined) {
+        searchedCities = JSON.parse(localStorage.getItem("searchedCities"));
+        city = searchedCities[searchedCities.length - 1];
         getWeather(city);
       }
       //get search history from local storage and display all on html
-      for (i=0; i < citiesToDisplay.length; i++){
-        var liElm = $("<li>").text(citiesToDisplay[i]);
+      for (i=0; i < searchedCities.length; i++){
+        var liElm = $("<li>").text(searchedCities[i]);
         liElm.addClass("list-group-item");
         $(".list-group").append(liElm);    
       }

@@ -54,7 +54,7 @@ header {
 }
 
 
-/* search history panel on the left */
+/* Your Favorite Cities */
 .your-favorite-cities{
     background-color: #28afce;
     margin-top: 20px;
@@ -62,11 +62,10 @@ header {
     border-radius: 5px;
 }
 
-/* #past-cities {
-    padding: 20px;
-    background-color: #93dded;
-    text-align: center;
-} */
+li:hover{
+    color: #28afce;
+    font-weight: 600;
+}
 
 /* UV Index  */
 #uv-index {
