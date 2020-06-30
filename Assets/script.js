@@ -83,17 +83,6 @@ $(document).ready(function() {
     });
     }
 
-    function displayHistory(){
-      $(".list-group").empty();
-      citiesToDisplay = JSON.parse(localStorage.getItem("searchedCities"));
-      for (i=0; i < citiesToDisplay.length; i++){
-        var liElm = $("<li>").text(citiesToDisplay[i]);
-        liElm.addClass("list-group-item");
-        $(".list-group").append(liElm);    
-      }
-    }
-
-
     $("#search").click(function(){
       event.preventDefault();
       if (city !== ""){
@@ -111,8 +100,23 @@ $(document).ready(function() {
       localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
     })
 
+    function displayHistory(){
+      $(".list-group").empty();
+      //get search history from local storage and display all on html
+      citiesToDisplay = JSON.parse(localStorage.getItem("searchedCities"));
+      for (i=0; i < citiesToDisplay.length; i++){
+        var liElm = $("<li>").text(citiesToDisplay[i]);
+        liElm.addClass("list-group-item");
+        $(".list-group").append(liElm);    
+      }
+
+      //display last searched city by grabbing the value of last city in the searchedCities array
+      city = citiesToDisplay[citiesToDisplay.length - 1];
+      getWeather();
+    }
+
+
     $(".list-group-item").click(function(){
-      alert("clicked!");
       city = $(this).text();
       getWeather();
     })
