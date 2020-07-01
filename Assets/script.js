@@ -9,11 +9,6 @@ $(document).ready(function() {
     var searchedCities = [];
 
     displayHistory();
-    // lastSearchedDisplay();
-
-    // function lastSearchedDisplay(){
-    //   getWeather("Salt Lake City");
-    // }
 
     function getWeather(city){
 
@@ -24,7 +19,6 @@ $(document).ready(function() {
       })
         .then(function(response) {
         //   console.log(response);
-        console.log(response);
         $("#city-name").text(response.name);
         $("#city-name").css("font-size", "1.5em");
         var weatherIconURL = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
@@ -45,7 +39,6 @@ $(document).ready(function() {
             method: "GET"
           })
             .then(function(response) {
-              console.log(response);
               var uvIndex = response.current.uvi;
               $("#uv-container").text("UV Index: ");
               $("#uv-index").text(uvIndex);
@@ -93,18 +86,19 @@ $(document).ready(function() {
 
       city = $("#city").val();
       searchedCities.push(city);
-      console.log(searchedCities);
 
       //for every search, create a city tab in the "Your Favorite Cities" panel
-      var liElm = $("<li>").text(city);
-      liElm.addClass("list-group-item");
-      $(".list-group").append(liElm);  
       getWeather(city);
 
       localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
+      console.log(searchedCities);
     })
 
-    $("li").click(function(){
+    $("#search").click(function(){
+      displayHistory();
+    })
+
+    $(".list-group").on("click", ".list-group-item", function(){
       city = $(this).text();
       getWeather(city);
     })
@@ -130,7 +124,6 @@ $(document).ready(function() {
         $(".list-group").append(liElm);    
       }
 
-      //display last searched city by grabbing the value of last city in the searchedCities array
     }
 
 });
