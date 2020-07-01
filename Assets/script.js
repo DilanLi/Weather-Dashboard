@@ -1,6 +1,7 @@
 $(document).ready(function() {
     
     var city;
+
     //use moment.js library to display day of week and date
     var currentDay = moment().format('MMMM Do YYYY');
     var currentDayOfWeek = moment().format("dddd");
@@ -10,6 +11,9 @@ $(document).ready(function() {
 
     displayHistory();
 
+
+
+    //this function uses the open weather api to generate dynamic weather info based on user input
     function getWeather(city){
 
       queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=17ffeabcb0395a48b5f63a70619d8c8e";
@@ -18,9 +22,7 @@ $(document).ready(function() {
         method: "GET"
       })
         .then(function(response) {
-          // console.log(response);
         $("#city-name").text(response.name);
-        // console.log(response.name);
         $("#city-name").css("font-size", "1.5em");
         var weatherIconURL = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
         $("#weather-icon").attr("src", weatherIconURL);
@@ -33,8 +35,8 @@ $(document).ready(function() {
         var lat = response.coord.lat;
         var lon = response.coord.lon;
 
-        secondQueryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=17ffeabcb0395a48b5f63a70619d8c8e";
 
+        secondQueryURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&appid=17ffeabcb0395a48b5f63a70619d8c8e";
         $.ajax({
             url: secondQueryURL,
             method: "GET"
@@ -82,21 +84,22 @@ $(document).ready(function() {
     });
     }
 
-    // Search input event listeners
+    // Event listener when search button is clicked, or when user presses the "enter" key
     $("#search").click(function(){
       event.preventDefault();
-
+      //grab user input
       city = $("#city").val();
+      //add searched city to searchedCities array
       searchedCities.push(city);
-
-      //for every search, create a city tab in the "Your Favorite Cities" panel
+      //get weather
       getWeather(city);
+      //clear up input box
       $("form").trigger("reset");
+      //store searchedCities array in local storage
       localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
-      console.log(searchedCities);
-
     })
 
+    // display the newly added city in history when a search is performed
     $("#search").click(function(){
       displayHistory();
     })
@@ -105,31 +108,35 @@ $(document).ready(function() {
     $(".list-group").on("click", ".list-group-item", function(){
       city = $(this).text();
       getWeather(city);
-
     })
 
     //clear all local storage when "clear" button is clicked on "Your Favorite Cities"
     $(".clear").on("click",function(){
       localStorage.clear();
-      displayHistory()
+      //clear search history on html
+      displayHistory();
     })
 
-
+    //this function is used to show all searched history
     function displayHistory(){
       $(".list-group").empty();
+      //get history from local storage
       searchedCities = JSON.parse(localStorage.getItem("searchedCities"));
-      // city = citiesToDisplay[citiesToDisplay.length - 1];
-      // getWeather(city);
+
+      //choose "Salt Lake City" as default upon entering the page
       if (searchedCities == undefined) {
         searchedCities = ["Salt Lake City"];
         getWeather("Salt Lake City");
+
+      //if there are search history, display history instead of default
       } else if (searchedCities != undefined) {
         searchedCities = JSON.parse(localStorage.getItem("searchedCities"));
+        //display last searched city's weather
         city = searchedCities[searchedCities.length - 1];
         getWeather(city);
       }
-      //get search history from local storage and display all on html
-      for (i=0; i < searchedCities.length; i++){
+        
+        for (i=0; i < searchedCities.length; i++){
         var liElm = $("<li>").text(searchedCities[i]);
         liElm.addClass("list-group-item");
         $(".list-group").append(liElm);    
