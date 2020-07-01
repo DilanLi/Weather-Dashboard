@@ -60,6 +60,23 @@ header {
     margin-top: 20px;
     padding: 12px 0 12px 20px;
     border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;}
+
+.clear {
+    background-color: #93dded;
+    border: none;
+    border-radius: 5px;
+    color: black;
+    padding: 5px 8px;
+    float: right;
+    margin-right: 15px;}
+
+.clear:hover {
+    color:white;
+    background-color: #93dded;
+
 }
 
 li:hover{

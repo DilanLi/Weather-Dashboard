@@ -12,13 +12,13 @@ $(document).ready(function() {
 
     function getWeather(city){
 
-      queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=17ffeabcb0395a48b5f63a70619d8c8e"
+      queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=17ffeabcb0395a48b5f63a70619d8c8e";
     $.ajax({
         url: queryURL,
         method: "GET"
       })
         .then(function(response) {
-        //   console.log(response);
+          console.log(response);
         $("#city-name").text(response.name);
         $("#city-name").css("font-size", "1.5em");
         var weatherIconURL = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
@@ -81,6 +81,7 @@ $(document).ready(function() {
     });
     }
 
+    // Search input event listeners
     $("#search").click(function(){
       event.preventDefault();
 
@@ -89,18 +90,27 @@ $(document).ready(function() {
 
       //for every search, create a city tab in the "Your Favorite Cities" panel
       getWeather(city);
-
+      $("form").trigger("reset");
       localStorage.setItem("searchedCities", JSON.stringify(searchedCities));
       console.log(searchedCities);
+
     })
 
     $("#search").click(function(){
       displayHistory();
     })
 
+    //get weather when a city is clicked in history tab
     $(".list-group").on("click", ".list-group-item", function(){
       city = $(this).text();
       getWeather(city);
+
+    })
+
+    //clear all local storage when "clear" button is clicked on "Your Favorite Cities"
+    $(".clear").on("click",function(){
+      localStorage.clear();
+      displayHistory();
     })
 
 
