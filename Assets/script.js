@@ -18,8 +18,9 @@ $(document).ready(function() {
         method: "GET"
       })
         .then(function(response) {
-          console.log(response);
+          // console.log(response);
         $("#city-name").text(response.name);
+        // console.log(response.name);
         $("#city-name").css("font-size", "1.5em");
         var weatherIconURL = "http://openweathermap.org/img/wn/" + response.weather[0].icon + "@2x.png";
         $("#weather-icon").attr("src", weatherIconURL);
@@ -110,7 +111,7 @@ $(document).ready(function() {
     //clear all local storage when "clear" button is clicked on "Your Favorite Cities"
     $(".clear").on("click",function(){
       localStorage.clear();
-      displayHistory();
+      displayHistory()
     })
 
 
